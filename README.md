@@ -13,4 +13,5 @@ Unit tests can be run outside emacs: `clj -X:test/run**
 
 * Clojure 1.11.1
 * CLI tooling: https://github.com/practicalli/clojure-cli-config
+* Emacs / Spacemacs w/ CIDER
 
