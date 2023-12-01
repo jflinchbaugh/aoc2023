@@ -40,7 +40,9 @@
 (defn- digit? [s]
   (re-matches #"^[0123456789]" s))
 
-(defn- digits [s]
+(defn- tr-digits
+  "replace first char of each 'number word' with the digit"
+  [s]
   (->> s
     (iterate rest)
     (take-while (complement empty?))
@@ -54,7 +56,7 @@
   (->>
     input
     seq
-    digits
+    tr-digits
     part-1
     ))
 
