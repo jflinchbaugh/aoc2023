@@ -25,7 +25,9 @@
 
   )
 
-(defn- tr-number [s]
+(defn- tr-number
+  "replace a number word at the beginning of a string with its digit"
+  [s]
   (-> s
     (str/replace #"^one" "1")
     (str/replace #"^two" "2")
@@ -47,9 +49,7 @@
   (->> s
     (iterate rest) ; 'abc' => ('abc' 'bc' 'c')
     (take-while (complement empty?))
-    (map str/join)
-    (map tr-number)
-    (map first)
+    (map (comp first tr-number str/join))
     (str/join)
     ))
 
