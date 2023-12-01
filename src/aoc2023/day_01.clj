@@ -41,10 +41,11 @@
   (re-matches #"^[0123456789]" s))
 
 (defn- tr-digits
-  "replace first char of each 'number word' with the digit"
+  "replace first char of each 'number word'
+  with the digit across the entire string"
   [s]
   (->> s
-    (iterate rest)
+    (iterate rest) ; 'abc' => ('abc' 'bc' 'c')
     (take-while (complement empty?))
     (map str/join)
     (map tr-number)
