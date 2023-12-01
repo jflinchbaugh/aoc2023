@@ -15,11 +15,55 @@
     (reduce + 0))
   )
 
+
 (comment
 
   (->> "src/aoc2023/day_01.txt"
     slurp
     part-1)
   ;; => 53651
+
+  )
+
+(defn- tr-number [s]
+  (-> s
+    (str/replace #"^one" "1")
+    (str/replace #"^two" "2")
+    (str/replace #"^three" "3")
+    (str/replace #"^four" "4")
+    (str/replace #"^five" "5")
+    (str/replace #"^six" "6")
+    (str/replace #"^seven" "7")
+    (str/replace #"^eight" "8")
+    (str/replace #"^nine" "9")))
+
+(defn- digit? [s]
+  (re-matches #"^[0123456789]" s))
+
+(defn- digits [s]
+  (->> s
+    (iterate rest)
+    (take-while (complement empty?))
+    (map str/join)
+    (map tr-number)
+    (map first)
+    (str/join)
+    ))
+
+(defn part-2 [input]
+  (->>
+    input
+    seq
+    digits
+    part-1
+    ))
+
+(comment
+
+  (->>
+    "src/aoc2023/day_01.txt"
+    slurp
+    part-2)
+  ;; => 53894
 
   )
