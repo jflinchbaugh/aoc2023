@@ -51,3 +51,30 @@
   ;; => 2105
 
   nil)
+
+(defn- min-balls [[game-num balls]]
+  [game-num (apply merge-with max balls)])
+
+(defn- powers [[game-num balls]]
+  (->>
+   balls
+   (map second)
+   (reduce * 1)))
+
+(defn part-2 [lines]
+  (->>
+   lines
+   (map parse-line)
+   (map min-balls)
+   (map powers)
+   (reduce + 0)))
+
+(comment
+
+  (->>
+   "src/aoc2023/day_02.txt"
+   file->lines
+   part-2)
+  ;; => 72422
+
+  nil)
