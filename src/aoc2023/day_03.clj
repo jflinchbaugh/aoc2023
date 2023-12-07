@@ -61,16 +61,19 @@
 
 (defn- adjacent-to-symbol? [symbols cells]
   (not
-    (empty?
-      (set/intersection
-        (->> cells
+   (empty?
+    (set/intersection
+     (->> cells
           (map (comp only-location))
           expand-adjacent
           set)
-        (set (map only-location symbols))))))
+     (set (map only-location symbols))))))
 
 (defn- cells->number [cells]
   (parse-long (str/join (map (comp str first) cells))))
+
+(defn- size? [expected actual]
+  (= expected (count actual)))
 
 (defn part-1 [lines]
   (let [symbols (find-symbols lines)
@@ -80,8 +83,24 @@
      number-groups
      (filter (partial adjacent-to-symbol? symbols))
      (map cells->number)
-     (reduce +)
-     )))
+     (reduce +))))
+
+(defn part-2 [lines]
+  (let [symbols (->>
+                 lines
+                 find-symbols
+                 (filter (comp (partial = \*) first)))
+        number-cells (find-numbers lines)
+        number-groups (group-numbers number-cells)]
+    symbols
+    (reduce +
+      (map (partial reduce *)
+        (filter (partial size? 2)
+          (for [s symbols]
+            (->>
+              number-groups
+              (filter (partial adjacent-to-symbol? [s]))
+              (map cells->number))))))))
 
 (comment
   (->>
@@ -89,5 +108,11 @@
    file->lines
    part-1)
   ;; => 556057
+
+  (->>
+   "src/aoc2023/day_03.txt"
+   file->lines
+   part-2)
+  ;; => 82824352
 
   nil)
