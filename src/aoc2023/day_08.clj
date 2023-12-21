@@ -6,7 +6,7 @@
   (let [[root left right] (str/split s #"[ =(,)]+")]
     [root [left right]]))
 
-(defn- walk [visited nodes [next-step & r-path]]
+(defn- walk-to-end [visited nodes [next-step & r-path]]
   (let [current (first visited)]
     (if
      (#{"ZZZ"} current)
@@ -22,7 +22,20 @@
                                     file->lines)
         path (cycle (map {\L 0 \R 1} path-line))
         nodes (into {} (map parse-node node-lines))]
-    (dec (count (walk ["AAA"] nodes path)))))
+    (dec (count (walk-to-end ["AAA"] nodes path)))))
+
+(defn end-node? [node-name]
+  (str/ends-with? node-name "Z"))
+
+(defn- walk-2x [visited nodes [next-step & r-path]]
+  (let [current (first visited)]
+    (if
+     (= 2 (count (filter end-node? visited)))
+      visited
+      (recur
+       (cons (get-in nodes [current next-step]) visited)
+       nodes
+       r-path))))
 
 (comment
 
