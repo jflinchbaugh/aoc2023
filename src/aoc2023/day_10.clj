@@ -15,41 +15,39 @@
 (defn part-1 []
   (let [start [58 51]
         tunnels (->>
-                  "src/aoc2023/day_10.txt"
-                  file->lines
-                  (mapcat
-                    (fn [row cols]
-                      (map (partial parse-connector row) (range) cols))
-                    (range))
-                  (into {}))
+                 "src/aoc2023/day_10.txt"
+                 file->lines
+                 (mapcat
+                  (fn [row cols]
+                    (map (partial parse-connector row) (range) cols))
+                  (range))
+                 (into {}))
         first-step (->>
-                     tunnels
-                     (filter
-                       (fn [[_ steps]]
-                         ((set steps) start)))
-                     first
-                     first)
+                    tunnels
+                    (filter
+                     (fn [[_ steps]]
+                       ((set steps) start)))
+                    first
+                    first)
         path (->>
-          [first-step start]
-          (iterate
-            (fn [[current prev]]
-              [(->>
-                 current
-                 tunnels
-                 (filter (partial not= prev))
-                 first) current]))
-          (map first)
-          (take-while (complement nil?)))]
+              [first-step start]
+              (iterate
+               (fn [[current prev]]
+                 [(->>
+                   current
+                   tunnels
+                   (filter (partial not= prev))
+                   first) current]))
+              (map first)
+              (take-while (complement nil?)))]
     (->
-      path
-      count
-      (/ 2)
-      )))
+     path
+     count
+     (/ 2))))
 
 (comment
 
   (part-1)
   ;; => 6942
-
 
   nil)
